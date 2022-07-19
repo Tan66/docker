@@ -1,6 +1,12 @@
-FROM node:16-alpine
+# build stage
+
+FROM node:alpine AS app-build
 WORKDIR /app
-RUN npm install
-EXPOSE 4200
 COPY . .
-CMD ["npm", "start"]
+RUN npm ci && \
+    npm run build
+
+# run server stage
+FROM nginx:alpine
+COPY --from=app-build /app/dist/simple-angular-with-docker /usr/share/nginx/html
+EXPOSE 80
