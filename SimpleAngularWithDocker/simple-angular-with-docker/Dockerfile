@@ -9,4 +9,5 @@ RUN npm ci && \
 # run server stage
 FROM nginx:alpine
 COPY --from=app-build /app/dist/simple-angular-with-docker /usr/share/nginx/html
-EXPOSE 80
+COPY nginx.conf /etc/nginx/nginx.conf
+EXPOSE 4000
